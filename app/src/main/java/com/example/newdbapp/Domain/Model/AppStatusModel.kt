@@ -6,11 +6,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AppStatusModel(
     var msg: String? = null,
-    var state: Int? = null,
+    var state: AppStateModel? = null,
     var status: String? = null,
     var tutorial: TutorialModel? = null
 )
-
+@Serializable
+class AppStateModel (
+    val currentState:String?,
+    val nextState:String?
+)
 @Serializable
 data class TutorialModel(
     var images: List<TutorialContentModel?>? = null,

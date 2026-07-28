@@ -1,5 +1,6 @@
 package com.example.newdbapp.Data.Dto
 
+import com.example.newdbapp.Domain.Model.AppStateModel
 import com.example.newdbapp.Domain.Model.AppStatusModel
 import com.example.newdbapp.Domain.Model.TutorialContentModel
 import com.example.newdbapp.Domain.Model.TutorialModel
@@ -11,7 +12,7 @@ data class AppStatusResponseDto(
     @SerialName("msg")
     var msg: String? = null,
     @SerialName("state")
-    var state: Int? = null,
+    var state: AppStateDto? = null,
     @SerialName("status")
     var status: String? = null,
     @SerialName("tutorial")
@@ -20,12 +21,30 @@ data class AppStatusResponseDto(
     fun toModel(): AppStatusModel {
         return AppStatusModel(
             msg = this.msg,
-            state = this.state,
+            state = this.state?.toModel(),
             status = this.status,
             tutorial = this.tutorial?.toModel()
         )
     }
 }
+
+@Serializable
+class AppStateDto (
+    @SerialName("current_state")
+    val currentState:String?,
+    @SerialName("next_state")
+    val nextState:String?
+){
+    fun toModel(): AppStateModel {
+        return AppStateModel(
+            currentState = this.currentState,
+            nextState = this.nextState
+        )
+    }
+}
+
+
+
 
 @Serializable
 data class TutorialModelDto(

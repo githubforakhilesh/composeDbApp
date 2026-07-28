@@ -53,7 +53,7 @@ object NetworkModule {
     ): Retrofit {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl("https://api.example.com/")
+            .baseUrl("https://api-dev.doodhvale.in/doodhvale/api/web/d5/")
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()

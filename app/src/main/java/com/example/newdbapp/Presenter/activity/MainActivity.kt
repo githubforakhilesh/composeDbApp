@@ -1,4 +1,4 @@
-package com.example.newdbapp
+package com.example.newdbapp.Presenter.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,17 +7,14 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.newdbapp.Presenter.activity.HomeScreen
-import com.example.newdbapp.Presenter.activity.LoginScreen
-import com.example.newdbapp.Presenter.activity.SignupScreen
-import com.example.newdbapp.Presenter.activity.SplashScreen
+import androidx.navigation.toRoute
 import com.example.newdbapp.sealedClasses.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen() // Native splash call
+        installSplashScreen() // Native splash call
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -25,25 +22,60 @@ class MainActivity : ComponentActivity() {
             NavHost(navController = navController, startDestination = Screen.Splash) {
                 composable<Screen.Splash> {
                     SplashScreen(
-                        onNavigateToLogin = {
-                            navController.navigate(Screen.Login) {
-                                popUpTo(Screen.Splash) { inclusive = true }
+                        onNavigateToLogin = { username ->
+                            navController.navigate(Screen.Login(username = username)) {
+                               // popUpTo(Screen.Splash) { inclusive = true }
                             }
+
                         },
                         onNavigateToHome = {
                             navController.navigate(Screen.Home) {
                                 popUpTo(Screen.Splash) { inclusive = true }
                             }
+                        },
+                        onNavigateToRegisterScreen = {
+                            navController.navigate(Screen.Signup) {
+                                popUpTo(Screen.Splash) { inclusive = true }
+                            }
+                        },
+                        onNavigateToCheckInScreen = {
+                            navController.navigate(Screen.CheckIn) {
+                                popUpTo(Screen.Splash) { inclusive = true }
+                            }
+                        },
+                    )
+                }
+                composable<Screen.Login> { backStackEntry ->
+                    val loginScreen = backStackEntry.toRoute<Screen.Login>()
+                    LoginScreen(
+                        onLoginClick = { navController.navigate(Screen.Home) },
+                        username = loginScreen.username
+                    )
+                }
+                composable<Screen.Signup> {
+                    SignupScreen (
+                        onSubmitClick = { username ->
+                            navController.navigate(Screen.Login(username = username)) {
+                                popUpTo(Screen.Splash) { inclusive = true }
+                            }
+                        }
+                    )
+
+
+                }
+                composable<Screen.Home> { HomeScreen() }
+                composable<Screen.Register> {
+                    // TODO: Create/Show RegisterScreen
+                }
+                composable<Screen.CheckIn> {
+                    CheckInScreen(
+                        onCheckInClick = {
+                            navController.navigate(Screen.Home) {
+                                popUpTo(Screen.CheckIn) { inclusive = true }
+                            }
                         }
                     )
                 }
-                composable<Screen.Login> {
-                    LoginScreen(onSignupClick = { navController.navigate(Screen.Signup) })
-                }
-                composable<Screen.Signup> { SignupScreen(onSubmitClick = {
-
-                }) }
-                composable<Screen.Home> { HomeScreen() }
             }
         }
     }

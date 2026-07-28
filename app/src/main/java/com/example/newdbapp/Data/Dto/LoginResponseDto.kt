@@ -3,7 +3,9 @@ package com.example.newdbapp.Data.Dto
 import com.example.newdbapp.Domain.Model.LoginModel
 import com.example.newdbapp.Domain.Model.UserModel
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LoginResponseDto (
     @SerialName("msg")
     private var mMsg: String? = null,
@@ -43,7 +45,7 @@ data class LoginResponseDto (
         )
     }
 }
-
+@Serializable
 data class UserDto(
     @SerialName("id")
     private var mId: Int = 0,

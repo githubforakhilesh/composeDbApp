@@ -19,6 +19,7 @@ class PreferenceManager @Inject constructor(
         val ACCESS_TOKEN = stringPreferencesKey("access_token")
         val USER_NAME = stringPreferencesKey("user_name")
         val PASSWORD = stringPreferencesKey("password")
+        val LOGIN_ID = stringPreferencesKey("login_id")
         val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
         val THEME_MODE = intPreferencesKey("theme_mode") // 0: System, 1: Light, 2: Dark
     }
@@ -31,7 +32,11 @@ class PreferenceManager @Inject constructor(
 
     val userName: Flow<String> = dataStore.data
         .handleErrors()
-        .map { preferences -> preferences[PreferencesKeys.USER_NAME] ?: "Guest" }
+        .map { preferences -> preferences[PreferencesKeys.USER_NAME] ?: "" }
+
+    val loginId: Flow<String> = dataStore.data
+        .handleErrors()
+        .map { preferences -> preferences[PreferencesKeys.LOGIN_ID] ?: "" }
 
     val password: Flow<String> = dataStore.data
         .handleErrors()
@@ -44,6 +49,12 @@ class PreferenceManager @Inject constructor(
     val themeMode: Flow<Int> = dataStore.data
         .handleErrors()
         .map { preferences -> preferences[PreferencesKeys.THEME_MODE] ?: 0 }
+
+    val deliveryBoyId: Flow<String> = dataStore.data
+        .handleErrors()
+        .map { preferences -> preferences[PreferencesKeys.LOGIN_ID] ?: "" }
+
+
 
     // 3. WRITE LOGIC (Suspend functions for saving)
 
@@ -60,6 +71,12 @@ class PreferenceManager @Inject constructor(
             preferences[PreferencesKeys.PASSWORD] = password
         }
     }
+    suspend fun saveLoginId(loginId:String){
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.LOGIN_ID] = loginId
+        }
+    }
+
 
     suspend fun updateTheme(mode: Int) {
         dataStore.edit { preferences ->
