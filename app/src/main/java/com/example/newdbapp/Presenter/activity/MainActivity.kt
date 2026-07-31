@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                 }
                 composable<Screen.Home> { HomeScreen() }
                 composable<Screen.Register> {
-                    // TODO: Create/Show RegisterScreen
+
                 }
                 composable<Screen.CheckIn> {
                     CheckInScreen(
