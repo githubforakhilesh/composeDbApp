@@ -60,6 +60,7 @@ class CustomerListViewModel @Inject constructor(
         }
     }
 }
+//modified
 sealed class CustomerListUiState{
     data class SuccessState(val customerListData: CustomerListData?):CustomerListUiState()
     data class ErrorState(val message:String):CustomerListUiState()
